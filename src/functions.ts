@@ -3,7 +3,7 @@
  * @param text
  * @param path
  */
-import {MarkdownPostProcessorContext} from "obsidian";
+import {EmbedContext, MarkdownPostProcessorContext} from "obsidian";
 import PlantumlPlugin from "./main";
 
 export class Replacer {
@@ -65,7 +65,7 @@ export class Replacer {
         return this.plugin.app.vault.adapter.getFullPath(folder.path);
     }
 
-    public getPath(ctx: MarkdownPostProcessorContext) {
+    public getPath(ctx: MarkdownPostProcessorContext | EmbedContext) {
         return this.getFullPath(ctx ? ctx.sourcePath : '');
     }
 
