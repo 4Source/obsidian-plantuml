@@ -1,4 +1,4 @@
-import { debounce, Debouncer, Keymap, MarkdownPostProcessorContext, setIcon, TextFileView, ViewStateResult, WorkspaceLeaf } from "obsidian";
+import { Keymap, MarkdownPostProcessorContext, setIcon, TextFileView, ViewStateResult, WorkspaceLeaf } from "obsidian";
 import PlantumlPlugin from "./main";
 import {
     drawSelection,
@@ -45,7 +45,6 @@ export class PumlView extends TextFileView {
     currentView: 'source' | 'preview';
     plugin: PlantumlPlugin;
     dispatchId = -1;
-    debounced: Debouncer<any>;
     debouncedProcessors: DebouncedProcessors
 
     extensions: Extension[] = [
@@ -68,7 +67,6 @@ export class PumlView extends TextFileView {
         super(leaf);
         this.plugin = plugin;
 
-        this.debounced = debounce(this.plugin.getProcessor().png, this.plugin.settings.debounce * 1000, true);
         this.debouncedProcessors = new DebouncedProcessors(plugin);
 
         this.sourceEl = this.contentEl.createDiv({ cls: 'plantuml-source-view', attr: { 'style': 'display: block' } });
@@ -218,7 +216,6 @@ export class PumlView extends TextFileView {
         const previewDiv = this.previewEl.createDiv();
 
 
-        this.debounced(this.getViewData(), previewDiv, null);
         this.debouncedProcessors.png(this.getViewData(), previewDiv, { sourcePath: this.file.path } as MarkdownPostProcessorContext)
         loadingHeader.remove();
     }
